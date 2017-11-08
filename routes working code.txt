@@ -1,0 +1,49 @@
+var express = require('express');
+var router = express.Router();
+
+//database connection
+var Connection = require('tedious').Connection;
+var Request = require('tedious').Request;
+var TYPES = require('tedious').TYPES;
+var config = {
+server: 'server-name',
+userName: 'User',
+password: 'password'
+,options: {
+database: 'Database'
+//rowCollectionOnDone : true,
+//useColumnNames : true,
+}};
+
+
+var connection = new Connection(config);
+
+/* GET items listing. */
+
+router.get('/', function(req, res) {
+  var results = [];
+   var connection = new Connection(config);
+    connection.on('connect', function(err) {
+      if(err){
+        console.log(err);
+      } else {
+        console.log('connected!');
+        var r = new Request("select * from [GTIS].[dbo].[WindingConfig]", function(){
+          //res.set({ 'Expires' : new Date(Date.now() + 900000) })
+          res.json(results);
+          });
+          r.on("row",function(row){
+            var rowdata = new Object();
+            row.forEach(function(column) {
+              rowdata[column.metadata.colName] = column.value;
+            });
+            results.push(rowdata);
+          });
+        this.execSql(r);
+      }
+  });
+});
+
+
+
+module.exports = router;

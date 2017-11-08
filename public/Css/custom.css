@@ -1,0 +1,106 @@
+﻿body {
+    background-color:#e3e5e5;
+}
+#footer {
+	clear: both;
+	position:fixed;
+	background:#60339b;
+	color: Gold;
+	bottom:0;
+    left: 0;
+	width:100%;
+	height:auto;			/* Height of the footer */
+	text-align:center;
+}
+main-container {
+    display: block;
+    /*padding: 80px;*/
+    width: 100%;
+}
+#detail_css{
+    display: block;
+    padding: 80px;
+    width: 100%;
+}
+
+button{
+    width : 30% ;
+    background-color : #350359;
+    color : gold;
+    font-size : 18px;
+}
+grid-container {
+    padding-right: 50px;
+}
+
+.section-title {
+    margin: 0 auto;
+    background: #00007A;
+    width: 800px;
+    color: white;
+    text-align: left;
+    font-size: 18px;
+    padding: 0.5em;
+    border-radius: 2.5px;
+}
+
+.section-body {
+    margin: 0 auto;
+    background: #E6E6E6;
+    width: 800px;
+    padding: 0.5em;
+    border-radius: 2.5px;
+    overflow: auto;
+}
+
+label {
+    color: #4c4c4c;
+    font-weight: 600;
+}
+
+error {
+    font-size: 12px;
+    color:red;
+}
+
+h2{
+    color: #4c4c4c;
+}
+
+.decorateText {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+    .decorateText:hover {
+        color: #0072ff;
+    }
+
+
+table {
+    border: thin 3px black;
+
+}
+
+th {
+    background-color: #FAFDFF;
+    color: #4c4c4c;
+    font-size: 18px;
+    padding: 0.7rem;
+}
+
+td {
+    font-size: 18px;
+    text-align: center;
+    padding: 0.7rem;
+    max-width:300px;word-wrap: break-word;
+}
+
+table tr:nth-child(even) {
+    background: #eee;
+}
+
+table tr:hover {
+    background-color: aliceblue;
+}
+

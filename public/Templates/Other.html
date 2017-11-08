@@ -1,0 +1,40 @@
+<center>
+    <h1> Showing details of each department </h1>
+<select id="dept" onchange="GraphPerDept2()">
+ <option>....a..</option>
+ <option>...b...</option>
+ <option>...c...</option>
+ <option>....d..</option>
+ <option>....e..</option>
+ <option>....f..</option>
+ <option>....g..</option>
+ <option>...h...</option>
+</select> 
+<button onclick="GraphPerDept2();">Show details</button>
+<div id="graph_show" ></div>
+<script>
+$.ajax({
+            type: "Get",
+            url: "/users/department",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                $('#dept').empty();
+                var select = document.getElementById('dept');
+
+                for(i = 0; i < data.length ; i++){
+                    //alert(data[i].dept);
+                    var opt = document.createElement('option');
+                    opt.value = data[i].dept;
+                    opt.innerHTML = data[i].dept;
+                    select.appendChild(opt);
+                }
+                //alert(data);
+            },
+            error: function (error) {
+                alert("An error happened try again later !!!");
+            }
+
+        });
+</script>
+</center>

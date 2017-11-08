@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>IT 680</title>
+
+    <script src="Scripts/moment.js"></script>
+    <script src="Scripts/ractive-v0.7.2.js"></script>
+    <!--ejgrid scripts-->
+    <script src="Scripts/jquery-1.11.1.min.js"></script>
+    <script src="Scripts/jquery.easing.1.3.js"></script>
+    <script src="Scripts/globalize.js"></script>
+    <script src="Scripts/jsrender.min.js"></script>
+    <script src="Scripts/ej.web.all.min.js"></script>
+    <script src="Scripts/Custom_script.js"></script>
+
+    <!--Css calls-->
+    <link href="Css/pure.css" rel="stylesheet" />
+    <link href="Content/ej/web/default-theme/ej.widgets.all.min.css" rel="stylesheet" />
+    <link href="Content/ej/web/responsive-css/ejgrid.responsive.css" rel="stylesheet" />
+    <link href="Css/custom.css" rel="stylesheet" />
+	<link href="Css/ej.widgets.core.min.css" rel="stylesheet" />
+    <link href="Css/ej.theme.min.css" rel="stylesheet" />
+
+</head>
+<body>
+  <div style ="background-color: #60339b;color: gold;">
+    <center>
+        <img src="images/MNSU.jpg"/>
+        <p id="date" style="font-size: 10px;"></p>
+    </center>
+    <MARQUEE >
+        <h1> Employee Salary Viewer </h1> 
+    </MARQUEE>
+  </div>
+    <center>
+        <button onclick="SearchClick()">Search by categories</button>
+        <button onclick="GraphClick()">Graph by categories</button>
+        <button onclick="DeptClick()">Show records by Department </button>
+    </center>
+    <hr />
+    <center>
+        <main-container></main-container>
+    </center>
+
+    <div id="footer">
+        <p>Copyright  &copy;  <b>MNSU_ IT 680 </b> 2017  </p>
+    </div>
+
+    <script>
+        //search template
+        var search_view = $.ajax({
+            url: 'Templates/Search.html',
+            async: false
+        }).responseText;
+        //graph template
+        var graph_view = $.ajax({
+            url: 'Templates/Graph.html',
+            async: false
+        }).responseText;
+        var other_view = $.ajax({
+            url: 'Templates/Other.html',
+            async: false
+        }).responseText;
+        //show date on the main screen script
+        var myVar = setInterval(myTimer, 1000);
+        function myTimer(){
+          var d = new Date();
+          document.getElementById("date").innerHTML = d;
+        }
+        //search function
+        function SearchClick() {
+          var data = null;
+            $.ajax({
+                type: "Get",
+                url: "/users",
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    Showsearch(data);
+                },
+                error: function (error) {
+                    alert("An error happened try again later !!!");
+                }
+
+            });
+        }
+        //graph template function <see graph.html for more details>
+        function GraphClick() {
+            var ractive = new Ractive({
+                el: 'main-container',
+                template: graph_view,
+            });
+        }
+        function DeptClick(){
+            var ractive = new Ractive({
+                el: 'main-container',
+                template: other_view
+            });
+        }
+        
+        //function show search
+        function Showsearch(data) {
+            var ractive = new Ractive({
+                el: 'main-container',
+                template: search_view,
+                init: function (options) {
+                    $('#show_view').ejGrid({
+                        dataSource: data,
+                        allowPaging: true,
+                        allowSorting: true,
+                        allowTextWrap: true,
+                        allowFiltering: true,
+                        filterSettings: { filterType: "filterbar" },
+                        columns: [
+                            //{ headerText: 'View Details', width: 150, format: "<input type=" + "'button'" + " onclick=" + "'ViewDetails()'" + "value=" + "'Select....'" + " />" },
+                            { field: "MASKED", headerText: "Person name Masked", isPrimaryKey: true},
+                            { field: "LONG_DESC", headerText: "Dept description" },
+                            { field: "COL_DIV_CODE", headerText: "Division" },
+                            { field: "EMPT_YEAR", headerText: "Entry Year" },
+                            { field: "tenure", headerText: "Tenure year" },
+                            { field: "ANNUAL_BASE_AMT", headerText: "Annual Base Salary" },
+                            { field: "YR_TO_DATE", headerText: "Year to Date Salary" },
+                        ]
+                    });
+                }
+
+            });
+        }
+    </script>
+
+
+    <script>
+function GraphPerDept2(){
+    var dept = $('#dept').val();
+        $.ajax({
+            type: "Get",
+            url: "/users/"+ dept,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+
+                    $('#graph_show').ejGrid({
+                        dataSource: data,
+                        //allowPaging: true,
+                        //allowSorting: true,
+                        //allowTextWrap: true,
+                        //allowFiltering: true,
+                        //filterSettings: { filterType: "filterbar" },
+                        columns: [
+                            //{ headerText: 'View Details', width: 150, format: "<input type=" + "'button'" + " onclick=" + "'ViewDetails()'" + "value=" + "'Select....'" + " />" },
+                            //{ field: "MASKED", headerText: "Person name Masked", isPrimaryKey: true},
+                            { field: "min", headerText: "Minimum Salary" },
+                            { field: "avg", headerText: "Salary Average" },
+                            { field: "max", headerText: "Maximum Salary " },
+                            
+                        ]
+                    });
+            },
+            error: function (error) {
+                alert("An error happened try again later !!!");
+            }
+
+        });
+    }
+    </script>
+</body>
+</html>

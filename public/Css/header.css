@@ -1,0 +1,9 @@
+﻿crumb {
+    color: #00007A; background:#E6E6E6; margin: 0px 3px 0px 1px; padding: 0px 5px 2px; border-radius: 4px; top: -1px; font-size: 90%; position: relative;
+}
+crumb > a:link {
+    color: #00007A; text-decoration: none;
+}
+#breadTrail {
+    font-family: Palatino Linotype, Book Antiqua, Palatino, serif; 
+}

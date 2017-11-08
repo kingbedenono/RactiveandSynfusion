@@ -1,0 +1,145 @@
+﻿<div>
+    Graph Salary by :
+    <select id="graph_by" onchange="showGraph()">
+        <option selected>---------------</option>
+        <option value="year">Entry Year</option>
+        <option value="dept">Department</option>
+        <option value="division">Division</option>
+    </select>
+</div>
+<div id="graph_show" ></div>
+
+<script>
+    function showGraph() {
+        var choice = $('#graph_by').val();
+        if (choice === "year") {
+            GraphPerYear();
+        }else if(choice==="dept"){
+            GraphPerDept();
+        }else if(choice==="division"){
+            GraphPerDivision();
+        }
+    }
+
+    //the graph functions
+    function GraphPerYear() {
+        $.ajax({
+            type: "Get",
+            url: "/users/year",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                //alert(data);
+                $("#graph_show").ejChart({
+                    title: { 
+                        text: 'Graph of Salary per year',
+                        labelFormat: '$ {value}'
+                    }, 
+                    primaryYAxis: {
+                            //range: { min: 0, max: 50 },
+                            labelFormat: '$ {value}'
+                    },
+                    series: [{
+                        isResponsive: true,
+                        type: 'line',
+                        dataSource: data,
+                        xName: "YEAR",
+                        yName: "AMT",
+                        marker: {
+                            shape: 'Diamond',
+                            visible: true,
+                            dataLabel: {
+                                visible: true,
+                                shape: 'rectangle',
+                                font: {color: "white"},
+                                labelFormat: '$ {value}'
+                            }
+                        },
+                        name: "Salary per year"
+                    }],
+                });
+            },
+            error: function (error) {
+                alert("An error happened try again later !!!");
+            }
+
+        });
+    }
+    function GraphPerDept(){
+        $.ajax({
+            type: "Get",
+            url: "/users/dept",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                $("#graph_show").ejChart({
+                    title: { 
+                        text: 'Graph of Salary by Dept',
+                    }, 
+                    labelPosition: 'outside',
+                    primaryYAxis: {
+                            //range: { min: 0, max: 100 },
+                            //labelFormat: '${value}K'
+                    },
+                    series: [{
+                        isResponsive: true,
+                        type: 'bar',
+                        dataSource: data,
+                        xName: "dept",
+                        yName: "AMT",
+                        name: "Salary by Department"
+                    }],
+                   
+                });
+            },
+            error: function (error) {
+                alert("An error happened try again later !!!");
+            }
+
+        });
+    }
+    function GraphPerDivision(){
+        $.ajax({
+            type: "Get",
+            url: "/users/div",
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                $("#graph_show").ejChart({
+                    title: { 
+                        text: 'Graph of Salary by Division',
+                    }, 
+                    legend: {
+                         visible: true,
+                         shape: 'seriesType',
+                    },
+                    series: [{
+                        isResponsive: true,
+                        type: 'column',         
+                        fill: '#69D2E7',
+                        labelPosition: 'outside',
+                        dataSource: data,
+                        xName: "div",
+                        yName: "AMT",
+                        //text: "text",
+                        marker: {
+                            visible: true,
+                            dataLabel: {
+                                visible: true,
+                                shape: 'rectangle',
+                                font: {color: "white"},
+                                labelFormat: '$ {value}'
+                            }
+                        },
+                        name: "Salary by Division"
+                    }],
+                   enable3D: true,
+                });
+            },
+            error: function (error) {
+                alert("An error happened try again later !!!");
+            }
+
+        });
+    }
+</script>
